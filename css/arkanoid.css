@@ -1,0 +1,51 @@
+body {
+	/*margin: auto;*/
+	 
+}
+
+#zoneactive {
+	cursor: url("blank_cursor.ico"), auto;
+	margin: auto;
+	width: 945px;
+	height: 635px;
+	border: solid 1px black;
+}
+
+#ball {
+	position: absolute;
+	width: 15px;
+	height: 15px;
+	top: 300px;
+	background-color: green;
+	/*background-image: url("ballrainbow.jpg");*/
+}	
+
+#raquette {
+	width: 100px;
+	height: 16px;
+	background-color: black;
+	position: absolute;
+	top: 610px;
+	left: 600px;
+}
+
+#briqueAncrage {
+	margin: auto;
+	position: absolute;
+	/*top: 10px;*/
+}
+
+.brique {
+	width:  50px;
+	height: 15px;
+	position: absolute;
+	background-color: blue;
+	top: 150px;
+}
+
+#scoreTF {
+	text-align: center;
+	font-family: arial;
+	font-size: 12px;
+	font-weight: bold;
+}
