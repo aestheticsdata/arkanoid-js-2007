@@ -25,11 +25,27 @@ function init() {
   const zoneactiveLborder = (window.innerWidth >> 1) - (zoneactiveWidth >> 1);
   const zoneactiveRborder = (window.innerWidth >> 1) + (zoneactiveWidth >> 1);
   const raquetteWidth = raquette.offsetWidth;
+  const tickMs = 10;
+  let lastTime = performance.now();
+  let accumulator = 0;
+  let animationFrameId = null;
   let stop = false;
   const scoreDiv = document.getElementById("score");
 
   makeBriques();
-  moveBall();
+
+  function onMouseMove(e) {
+    if (e.clientX > zoneactiveRborder - raquetteWidth) {
+      x = zoneactiveRborder - raquetteWidth;
+    } else if (e.clientX < zoneactiveLborder) {
+      x = zoneactiveLborder;
+    } else {
+      x = e.clientX;
+    }
+    raquette.style.left = `${x}px`;
+  }
+
+  document.addEventListener("mousemove", onMouseMove);
 
   function makeBriques() {
     for (let i = 0; i < nbBriques; i++) {
@@ -55,17 +71,6 @@ function init() {
   }
 
   function moveBall() {
-    document.addEventListener("mousemove", (e) => {
-      if (e.clientX > zoneactiveRborder - raquetteWidth) {
-        x = zoneactiveRborder - raquetteWidth;
-      } else if (e.clientX < zoneactiveLborder) {
-        x = zoneactiveLborder;
-      } else {
-        x = e.clientX;
-      }
-      raquette.style.left = `${x}px`;
-    });
-
     zoneContactRaquetteDebut = x;
     zoneContactRaquetteFin = x + raquetteWidth;
 
@@ -141,8 +146,24 @@ function init() {
     scoreDiv.textContent = briques_remaining;
   }
 
-  (function enterframe() {
-    moveBall();
-    if (!stop) setTimeout(enterframe, 10);
-  })();
+  updateScore();
+
+  function gameLoop(now) {
+    accumulator += now - lastTime;
+    lastTime = now;
+
+    while (accumulator >= tickMs && !stop) {
+      moveBall();
+      accumulator -= tickMs;
+    }
+
+    if (!stop) {
+      animationFrameId = requestAnimationFrame(gameLoop);
+    } else {
+      if (animationFrameId !== null) cancelAnimationFrame(animationFrameId);
+      document.removeEventListener("mousemove", onMouseMove);
+    }
+  }
+
+  animationFrameId = requestAnimationFrame(gameLoop);
 }
