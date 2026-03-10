@@ -1,96 +1,98 @@
 body {
-	background: radial-gradient(circle, #87CEEB, #1E90FF);
+  background: radial-gradient(circle, #87ceeb, #1e90ff);
 }
 
-#zoneactive {
-	cursor: url("blank_cursor.ico"), auto;
-	margin: auto;
-	width: 945px;
-	height: 635px;
-	border: solid 3px white;
-	border-radius: 10px;
+#gameArea {
+  cursor: url("blank_cursor.ico"), auto;
+  margin: auto;
+  width: 945px;
+  height: 635px;
+  border: solid 3px white;
+  border-radius: 10px;
 }
 
 #ball {
-	position: absolute;
-	width: 15px;
-	height: 15px;
-	top: 300px;
-	background-color: #f8ff76;
-	border-radius: 50%;
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  top: 300px;
+  background-color: #f8ff76;
+  border-radius: 50%;
 }
 
-#raquette {
-	width: 100px;
-	height: 16px;
-	background-color: white;
-	position: absolute;
-	top: 610px;
-	left: 600px;
-	border-radius: 8px;
-	overflow: hidden;
+#paddle {
+  width: 100px;
+  height: 16px;
+  background-color: white;
+  position: absolute;
+  top: 610px;
+  left: 600px;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
-#raquette::before,
-#raquette::after {
-	content: "";
-	position: absolute;
-	width: 10px;
-	height: 100%;
-	background-color: red;
-	top: 0;
+#paddle::before,
+#paddle::after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 100%;
+  background-color: red;
+  top: 0;
 }
 
-#raquette::before {
-	left: 0;
-	border-top-left-radius: 8px;
-	border-bottom-left-radius: 8px;
+#paddle::before {
+  left: 0;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
 }
 
-#raquette::after {
-	right: 0;
-	border-top-right-radius: 8px;
-	border-bottom-right-radius: 8px;
+#paddle::after {
+  right: 0;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
 }
 
-#briqueAncrage {
-	margin: auto;
-	position: absolute;
+#brickAnchor {
+  margin: auto;
+  position: absolute;
 }
 
-.brique {
-	width: 50px;
-	height: 15px;
-	position: absolute;
-	background-color: blue;
-	top: 150px;
-	border-radius: 5px;
-	transition: background-color 0.5s ease, transform 0.3s ease;
+.brick {
+  width: 50px;
+  height: 15px;
+  position: absolute;
+  background-color: blue;
+  top: 150px;
+  border-radius: 5px;
+  transition:
+    background-color 0.5s ease,
+    transform 0.3s ease;
 }
 
 .fade-out {
-	transform: scale(0);
-	opacity: 0;
+  transform: scale(0);
+  opacity: 0;
 }
 
-#scoreTF {
-	text-align: center;
-	font-family: Arial, serif;
-	font-size: 12px;
-	font-weight: bold;
+#scoreBoard {
+  text-align: center;
+  font-family: Arial, serif;
+  font-size: 12px;
+  font-weight: bold;
 }
 
 .shrink {
-	animation: shrinkOut 0.25s forwards;
+  animation: shrinkOut 0.25s forwards;
 }
 
 @keyframes shrinkOut {
-	0% {
-		transform: scale(1);
-		opacity: 1;
-	}
-	100% {
-		transform: scale(0);
-		opacity: 0;
-	}
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0);
+    opacity: 0;
+  }
 }

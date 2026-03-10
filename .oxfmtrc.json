@@ -1,0 +1,55 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "printWidth": 120,
+  "sortImports": {
+    "customGroups": [
+      {
+        "groupName": "react-value",
+        "elementNamePattern": ["react", "react-dom"],
+        "selector": "external",
+        "modifiers": ["value"]
+      },
+      {
+        "groupName": "react-type",
+        "elementNamePattern": ["react", "react-dom"],
+        "selector": "external",
+        "modifiers": ["type"]
+      },
+      {
+        "groupName": "app-value",
+        "elementNamePattern": ["@/**"],
+        "selector": "internal",
+        "modifiers": ["value"]
+      },
+      {
+        "groupName": "app-type",
+        "elementNamePattern": ["@/**"],
+        "selector": "internal",
+        "modifiers": ["type"]
+      }
+    ],
+    "groups": [
+      "value-builtin",
+      "type-builtin",
+
+      "react-value",
+      "react-type",
+
+      "value-external",
+      "type-external",
+
+      ["app-value", "value-internal", "value-subpath"],
+      ["app-type", "type-internal", "type-subpath"],
+
+      ["value-parent", "value-sibling", "value-index"],
+      ["type-parent", "type-sibling", "type-index"],
+
+      "style",
+      "unknown"
+    ],
+    "newlinesBetween": true,
+    "order": "asc",
+    "ignoreCase": true,
+    "sortSideEffects": false
+  }
+}
