@@ -187,12 +187,12 @@ ASCII sketch:
 
 ```text
                   Upward playfield
-                       ^
-                       |
-        sharper left   |   sharper right
-             \         |         /
-              \        |        /
-               \       |       /
+                        ^
+                        |
+        sharper left    |   sharper right
+             \          |        /
+              \         |       /
+               \        |      /
 ------------------------+------------------------> X
       left edge      paddle center           right edge
 
