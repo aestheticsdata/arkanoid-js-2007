@@ -1,4 +1,6 @@
 #gameArea {
+  position: relative;
+  overflow: hidden;
   cursor: auto;
   margin: auto;
   width: var(--game-area-width);
@@ -13,8 +15,8 @@
 
 #brickAnchor {
   position: absolute;
-  display: flex;
-  gap: var(--brick-gap);
+  inset: 0;
+  pointer-events: none;
 }
 
 #scoreBoard {

@@ -54,8 +54,14 @@ pnpm run lint:fix
 
 ```text
 src/
-  core/         # Game orchestration (BreakoutGame)
-  entities/     # Ball, Paddle, BrickWall
+  core/
+    config/     # Gameplay configuration (physics + brick rows/styles)
+    physics/    # Shared gameplay physics helpers
+    BreakoutGame.ts
+  entities/
+    ball/
+    paddle/
+    bricks/
   interfaces/   # Shared TS types/interfaces
   shared/       # Shared utilities (DOM helpers)
   ui/           # UI concerns (Scoreboard)
@@ -80,6 +86,7 @@ css/
 - Strict mode is enabled.
 - Path aliases are configured in both `tsconfig.json` and `vite.config.ts`.
 - Available aliases: `@/*`, `@core/*`, `@entities/*`, `@interfaces/*`, `@ui/*`, `@shared/*`.
+- Brick rows, row colors, special bricks, and core physics values are configured in `src/core/config/BreakoutConfig.ts`.
 
 ### CSS architecture
 

@@ -16,12 +16,12 @@
 }
 
 #paddle {
-  width: var(--paddle-width);
-  height: var(--paddle-height);
-  background-color: var(--color-white);
   position: absolute;
   top: var(--paddle-initial-top);
   left: var(--paddle-initial-left);
+  width: var(--paddle-width);
+  height: var(--paddle-height);
+  background-color: var(--color-white);
   border-radius: var(--paddle-radius);
   overflow: hidden;
 
@@ -29,10 +29,10 @@
   &::after {
     content: "";
     position: absolute;
+    top: 0;
     width: var(--paddle-endcap-width);
     height: 100%;
     background-color: var(--color-red);
-    top: 0;
   }
 
   &::before {
@@ -49,10 +49,11 @@
 }
 
 .brick {
+  position: absolute;
   width: var(--brick-width);
   height: var(--brick-height);
-  background-color: var(--color-brick);
   border-radius: var(--brick-radius);
+  background: var(--brick-background, var(--brick-color, var(--color-brick-default)));
   transition:
     background-color var(--transition-brick-color),
     transform var(--transition-brick-transform);
