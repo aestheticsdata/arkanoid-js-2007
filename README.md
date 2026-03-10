@@ -2,6 +2,53 @@
 
 Tiny browser Breakout game originally made in 2007, modernized with Vite, strict TypeScript, and native CSS.
 
+## What Changed
+
+### Build and tooling modernization
+
+- Migrated from legacy setup to `Vite`.
+- Switched to `pnpm` scripts and workflow.
+- Added strict TypeScript type-checking.
+- Added `oxfmt` as formatter (`printWidth: 120`).
+- Added `oxlint` as linter with `style` category disabled to avoid formatter conflicts.
+- Added Lightning CSS as the CSS transformer in Vite.
+- Enabled native CSS nesting through Lightning CSS drafts.
+
+### Architecture refactor
+
+- Refactored codebase from legacy DOM-style procedural logic to OOP TypeScript.
+- Split responsibilities into dedicated modules:
+  - `core`: game orchestration + config + physics helpers
+  - `entities`: `ball`, `paddle`, `bricks`
+  - `ui`: scoreboard rendering
+  - `interfaces`: shared types/contracts
+  - `shared`: DOM utilities
+- Added TypeScript/Vite path aliases (`@core`, `@entities`, `@interfaces`, `@ui`, `@shared`, `@`).
+
+### Gameplay changes
+
+- Ball now starts on the paddle (inside game area) instead of spawning outside.
+- Paddle collision now computes a dynamic bounce angle based on impact position.
+- Brick wall now supports multiple configurable rows.
+- Brick style is now fully configurable:
+  - per-row colors/styles
+  - per-brick overrides for special bricks (including gradients)
+- Current default configuration uses `2` brick rows for validation.
+
+### CSS system overhaul
+
+- Replaced old CSS approach with native modular CSS files and token files.
+- Introduced design tokens in `css/tokens/*` (colors, sizes, radii, typography, motion).
+- Migrated color tokens to `oklch(...)`.
+- Ball is rendered with CSS (gradient/glow), no image asset required.
+- Brick visuals rely on `.brick` class and CSS custom properties instead of legacy inline hardcoded style values.
+- Cursor hiding is handled with modern CSS state: `#gameArea.is-playing { cursor: none; }` (no blank `.ico` hack).
+
+### Naming and terminology cleanup
+
+- Removed remaining French identifiers in code naming (variables/functions/types).
+- Replaced Arkanoid naming with Breakout naming across the project.
+
 ## Tutorial
 
 Get the project running locally:
@@ -87,6 +134,36 @@ css/
 - Path aliases are configured in both `tsconfig.json` and `vite.config.ts`.
 - Available aliases: `@/*`, `@core/*`, `@entities/*`, `@interfaces/*`, `@ui/*`, `@shared/*`.
 - Brick rows, row colors, special bricks, and core physics values are configured in `src/core/config/BreakoutConfig.ts`.
+
+### Gameplay configuration
+
+Main gameplay tuning is centralized in `src/core/config/BreakoutConfig.ts`:
+
+- Physics:
+  - `tickMs`
+  - `ballSpeed`
+  - `initialLaunchAngleDeg`
+  - `maxPaddleBounceAngleDeg`
+- Bricks:
+  - `columns`
+  - `rows` (array; one entry per row with style)
+  - `width`, `height`
+  - `horizontalGap`, `verticalGap`
+  - `topOffset`
+  - `specialBricks` (targeted row/column overrides)
+
+Example:
+
+```ts
+bricks: {
+  columns: 17,
+  rows: [{ style: { color: "var(--color-brick-row-1)" } }, { style: { color: "var(--color-brick-row-2)" } }],
+  specialBricks: [
+    { row: 0, column: 4, style: { background: "var(--gradient-brick-special)" } },
+    { row: 1, column: 12, style: { background: "var(--gradient-brick-special-alt)" } }
+  ]
+}
+```
 
 ### CSS architecture
 
