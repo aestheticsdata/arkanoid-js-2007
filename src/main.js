@@ -19,10 +19,7 @@ function init() {
   const brique_width = 50;
   const brique_spacing = 2;
   const zoneactiveWidth = document.getElementById("zoneactive").clientWidth;
-  const briqueAncrageLeftMargin =
-    (zoneactiveWidth -
-      (nbBriques * brique_width + (nbBriques - 1) * brique_spacing)) /
-    2;
+  const briqueAncrageLeftMargin = (zoneactiveWidth - nbBriques * brique_width - (nbBriques - 1) * brique_spacing) / 2;
   let zoneContactRaquetteDebut = 0;
   let zoneContactRaquetteFin = 0;
   const zoneactiveLborder = (window.innerWidth >> 1) - (zoneactiveWidth >> 1);
