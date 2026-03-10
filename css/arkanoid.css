@@ -16,7 +16,7 @@ body {
   width: 15px;
   height: 15px;
   top: 300px;
-  background-color: #f8ff76;
+  background: radial-gradient(circle at 30% 30%, #fff9cb 0%, #f8ff76 45%, #e8d92e 100%);
   border-radius: 50%;
 }
 
@@ -54,16 +54,15 @@ body {
 }
 
 #brickAnchor {
-  margin: auto;
   position: absolute;
+  display: flex;
+  gap: 2px;
 }
 
 .brick {
   width: 50px;
   height: 15px;
-  position: absolute;
   background-color: blue;
-  top: 150px;
   border-radius: 5px;
   transition:
     background-color 0.5s ease,

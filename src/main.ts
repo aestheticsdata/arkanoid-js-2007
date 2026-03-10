@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", init);
 
 type BrickState = "blue" | "hidden";
+type VerticalDirection = 0 | 1;
 
 function getElementByIdOrThrow<T extends HTMLElement>(id: string): T {
   const element = document.getElementById(id);
@@ -19,7 +20,7 @@ function init(): void {
 
   let xPos = 300;
   let yPos = 50;
-  let yDirection = 1;
+  let yDirection: VerticalDirection = 1;
   let xDirection = 1;
 
   const brickCount = 17;
@@ -30,6 +31,9 @@ function init(): void {
   const brickHeight = 15;
   const brickWidth = 50;
   const brickSpacing = 2;
+  const ballSize = 15;
+  const paddleY = 605;
+  const ceilingY = 1;
 
   let paddleX = 0;
   let paddleContactStart = 0;
@@ -66,11 +70,13 @@ function init(): void {
   }
 
   function makeBricks(): void {
+    brickAnchor.style.left = `${gameAreaLeftBorder + brickAnchorLeftMargin}px`;
+    brickAnchor.style.top = `${gameArea.offsetTop + brickTopY}px`;
+
     for (let i = 0; i < brickCount; i++) {
       const brick = document.createElement("span");
       brick.id = `brick_id${i}`;
       brick.className = "brick";
-      brick.style.left = `${i * (brickWidth + brickSpacing) + brickAnchorLeftMargin}px`;
 
       brickStateLookup[i] = "blue";
       brickPositionLookup[i] = i * (brickWidth + brickSpacing) + brickAnchorLeftMargin;
@@ -84,47 +90,17 @@ function init(): void {
     paddleContactStart = paddleX;
     paddleContactEnd = paddleX + paddleWidth;
 
-    if (yPos <= 605 && yDirection === 1) {
-      if (yPos + 15 >= brickTopY && yPos <= brickTopY + brickHeight) {
-        for (let i = 0; i < bricks.length; i++) {
-          const relX = xPos - gameAreaLeftBorder;
-          if (brickPositionLookup[i] <= relX && relX <= brickPositionLookup[i] + brickWidth) {
-            if (brickStateLookup[i] === "blue") {
-              yDirection = 0;
-              remainingBricks--;
-              brickStateLookup[i] = "hidden";
-              bricks[i].classList.add("shrink");
-            }
-            updateScore();
-            if (remainingBricks === 0) stop = true;
-            break;
-          }
-        }
-      }
+    if (yPos <= paddleY && yDirection === 1) {
+      processBrickCollision(0);
       yPos += step;
-    } else if (yPos > 605 && yDirection === 1) {
+    } else if (yPos > paddleY && yDirection === 1) {
       if (xPos < paddleContactStart || xPos > paddleContactEnd) stop = true;
       yDirection = 0;
       yPos -= step;
-    } else if (yPos >= 1 && yDirection === 0) {
-      if (yPos + 15 >= brickTopY && yPos <= brickTopY + brickHeight) {
-        for (let i = 0; i < bricks.length; i++) {
-          const relX = xPos - gameAreaLeftBorder;
-          if (brickPositionLookup[i] <= relX && relX <= brickPositionLookup[i] + brickWidth) {
-            if (brickStateLookup[i] === "blue") {
-              yDirection = 1;
-              remainingBricks--;
-              brickStateLookup[i] = "hidden";
-              bricks[i].classList.add("shrink");
-            }
-            updateScore();
-            if (remainingBricks === 0) stop = true;
-            break;
-          }
-        }
-      }
+    } else if (yPos >= ceilingY && yDirection === 0) {
+      processBrickCollision(1);
       yPos -= step;
-    } else if (yPos < 1 && yDirection === 0) {
+    } else if (yPos < ceilingY && yDirection === 0) {
       yDirection = 1;
       yPos += step;
     }
@@ -143,6 +119,26 @@ function init(): void {
 
     ball.style.left = `${xPos}px`;
     ball.style.top = `${yPos}px`;
+  }
+
+  function processBrickCollision(nextVerticalDirection: VerticalDirection): void {
+    if (!(yPos + ballSize >= brickTopY && yPos <= brickTopY + brickHeight)) return;
+
+    const relX = xPos - gameAreaLeftBorder;
+    for (let i = 0; i < bricks.length; i++) {
+      if (brickPositionLookup[i] <= relX && relX <= brickPositionLookup[i] + brickWidth) {
+        if (brickStateLookup[i] === "blue") {
+          yDirection = nextVerticalDirection;
+          remainingBricks--;
+          brickStateLookup[i] = "hidden";
+          bricks[i].classList.add("shrink");
+        }
+
+        updateScore();
+        if (remainingBricks === 0) stop = true;
+        break;
+      }
+    }
   }
 
   function updateScore(): void {
