@@ -1,10 +1,14 @@
 #gameArea {
-  cursor: url("blank_cursor.ico"), auto;
+  cursor: auto;
   margin: auto;
   width: var(--game-area-width);
   height: var(--game-area-height);
   border: solid var(--game-area-border-width) var(--color-white);
   border-radius: var(--game-area-radius);
+}
+
+#gameArea.is-playing {
+  cursor: none;
 }
 
 #brickAnchor {

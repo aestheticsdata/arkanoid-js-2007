@@ -65,6 +65,7 @@ export class BreakoutGame {
       this.brickAnchorLeftMargin,
     );
     this.scoreboard.update(this.brickWall.remainingBricks);
+    this.elements.gameArea.classList.add("is-playing");
     document.addEventListener("mousemove", this.onMouseMove);
     this.animationFrameId = requestAnimationFrame(this.gameLoop);
   }
@@ -131,5 +132,6 @@ export class BreakoutGame {
       this.animationFrameId = null;
     }
     document.removeEventListener("mousemove", this.onMouseMove);
+    this.elements.gameArea.classList.remove("is-playing");
   }
 }
