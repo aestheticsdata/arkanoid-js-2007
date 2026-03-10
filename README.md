@@ -165,6 +165,47 @@ bricks: {
 }
 ```
 
+### Paddle bounce angle
+
+Paddle rebound is handled in `src/core/physics/PaddleBounce.ts` and applied from `src/core/BreakoutGame.ts`.
+
+Principle:
+
+- The paddle is split conceptually from left edge to right edge.
+- Hit near center: mostly vertical rebound (safe, straight up).
+- Hit near edges: stronger horizontal component (sharper angle).
+
+Computation:
+
+- `relativeHit = (ballCenterX - paddleCenterX) / (paddleWidth / 2)`, clamped to `[-1, 1]`.
+- `bounceAngle = relativeHit * maxPaddleBounceAngleDeg`.
+- New velocity keeps constant speed:
+  - `vx = speed * sin(bounceAngle)`
+  - `vy = -abs(speed * cos(bounceAngle))`
+
+ASCII sketch:
+
+```text
+                  Upward playfield
+                       ^
+                       |
+        sharper left   |   sharper right
+             \         |         /
+              \        |        /
+               \       |       /
+------------------------+------------------------> X
+      left edge      paddle center           right edge
+
+relativeHit = -1                      relativeHit = +1
+angle ~= -max                         angle ~= +max
+vx < 0, vy < 0                        vx > 0, vy < 0
+```
+
+Tuning:
+
+- Increase `maxPaddleBounceAngleDeg` for more aggressive side rebounds.
+- Decrease it for more vertical/forgiving gameplay.
+
 ### CSS architecture
 
 - Native CSS modules through file-level separation and native `@import`.
