@@ -8,6 +8,7 @@
   --color-brick-default: oklch(0.52 0.28 266);
   --color-brick-row-1: oklch(0.57 0.26 274);
   --color-brick-row-2: oklch(0.69 0.19 243);
+  --color-brick-row-3: oklch(0.7 0.2914 343.06);
   --gradient-brick-special: linear-gradient(135deg, oklch(0.76 0.24 70), oklch(0.62 0.2 20));
   --gradient-brick-special-alt: linear-gradient(135deg, oklch(0.8 0.18 165), oklch(0.64 0.2 220));
 
