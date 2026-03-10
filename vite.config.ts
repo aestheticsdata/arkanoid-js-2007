@@ -1,14 +1,13 @@
 import { fileURLToPath, URL } from "node:url";
 
+import { Features } from "lightningcss";
 import { defineConfig } from "vite";
 
 export default defineConfig({
   css: {
     transformer: "lightningcss",
     lightningcss: {
-      drafts: {
-        nesting: true,
-      },
+      include: Features.Nesting,
     },
   },
   resolve: {

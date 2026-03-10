@@ -12,7 +12,7 @@ Tiny browser Breakout game originally made in 2007, modernized with Vite, strict
 - Added `oxfmt` as formatter (`printWidth: 120`).
 - Added `oxlint` as linter with `style` category disabled to avoid formatter conflicts.
 - Added Lightning CSS as the CSS transformer in Vite.
-- Enabled native CSS nesting through Lightning CSS drafts.
+- Enabled CSS nesting transpilation through Lightning CSS `include: Features.Nesting`.
 
 ### Architecture refactor
 
@@ -271,7 +271,7 @@ Tuning:
 - Native CSS modules through file-level separation and native `@import`.
 - Design tokens are centralized in `css/tokens/*`.
 - Color tokens use `oklch(...)`.
-- Native CSS nesting is enabled via Lightning CSS drafts.
+- CSS nesting transpilation is enabled via Lightning CSS `include: Features.Nesting`.
 - Lightning CSS repository: <https://github.com/parcel-bundler/lightningcss>
 - Gameplay cursor hiding uses `#gameArea.is-playing { cursor: none; }`.
 
