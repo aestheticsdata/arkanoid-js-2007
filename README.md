@@ -1,6 +1,6 @@
-## Arkanoid (2007, modernized)
+## Breakout (2007, modernized)
 
-Tiny Arkanoid game originally made in 2007, modernized to run with Vite.
+Tiny Breakout game originally made in 2007, modernized to run with Vite.
 
 ### Run
 

@@ -1,5 +1,5 @@
 {
-  "name": "arkanoid-2007",
+  "name": "breakout-2007",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -8,12 +8,15 @@
     "build": "vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
+    "lint": "oxlint .",
+    "lint:fix": "oxlint . --fix",
     "fmt": "oxfmt .",
     "fmt:check": "oxfmt . --check"
   },
   "devDependencies": {
     "@types/node": "^25.4.0",
     "oxfmt": "^0.37.0",
+    "oxlint": "^1.52.0",
     "typescript": "^5.9.3",
     "vite": "^7.1.5"
   }
