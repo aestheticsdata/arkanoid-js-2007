@@ -84,6 +84,25 @@ pnpm run fmt
 pnpm run lint:fix
 ```
 
+Deploy to production (versioned release + auto rollback on failure):
+
+```bash
+./scripts/deploy.sh deploy
+```
+
+Manual rollback to last backup:
+
+```bash
+./scripts/deploy.sh rollback
+```
+
+Manual rollback to a specific version:
+
+```bash
+./scripts/deploy.sh list-releases
+./scripts/deploy.sh rollback-to release-YYYYMMDD-HHMMSS-branch-hash
+```
+
 ## Reference
 
 ### Scripts
@@ -96,6 +115,44 @@ pnpm run lint:fix
 - `pnpm run lint`: run `oxlint`
 - `pnpm run lint:fix`: apply safe lint fixes
 - `pnpm run typecheck`: run TypeScript type-checking (`tsc --noEmit`)
+- `./scripts/deploy.sh deploy`: build + upload + activate release with automatic rollback on detected failure
+- `./scripts/deploy.sh rollback`: rollback to the previous backup version
+- `./scripts/deploy.sh rollback-to <release_name>`: rollback to a specific stored release
+- `./scripts/deploy.sh list-releases`: list versioned releases stored on the server
+
+### Deployment strategy
+
+- Target host default: `debian@ks-b`.
+- Target path default: `/var/www/1991computer/arkanoid-2007`.
+- Versioning:
+  - each deploy creates `releases/release-<timestamp>-<branch>-<gitHash>`
+  - each release includes `release.json` metadata
+- Switch strategy:
+  - staged release upload to `releases/...`
+  - activation copies staged release into live directory
+  - previous live version is stored in `/var/www/1991computer/arkanoid-2007.bak`
+- Auto rollback:
+  - if deploy fails after live switch or healthcheck fails, script restores backup automatically
+- Manual rollback:
+  - `rollback` restores `.bak`
+  - `rollback-to` reactivates any specific release from `releases/`
+- Healthcheck:
+  - URL: `https://1991computer.com/arkanoid-2007/`
+  - marker checked in HTML: `Breakout 2007`
+- Nginx compatibility:
+  - deploy script copies `index.html` to `arkanoid.html` to match current nginx `index arkanoid.html` config.
+
+You can override defaults with env vars when running the script:
+
+```bash
+REMOTE_USER_HOST=debian@ks-b \
+WEB_ROOT_BASE=/var/www/1991computer/arkanoid-2007 \
+HEALTHCHECK_URL=https://1991computer.com/arkanoid-2007/ \
+EXPECTED_HTML_MARKER="Breakout 2007" \
+MAX_RELEASES_TO_KEEP=20 \
+BUILD_BASE_PATH=/arkanoid-2007/ \
+./scripts/deploy.sh deploy
+```
 
 ### Project structure
 
@@ -113,6 +170,9 @@ src/
   shared/       # Shared utilities (DOM helpers)
   ui/           # UI concerns (Scoreboard)
   main.ts       # Bootstrap
+
+scripts/
+  deploy.sh     # Deploy + rollback (auto/manual)
 
 css/
   main.css      # CSS entrypoint
