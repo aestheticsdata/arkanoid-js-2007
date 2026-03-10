@@ -1,0 +1,21 @@
+#gameArea {
+  cursor: url("blank_cursor.ico"), auto;
+  margin: auto;
+  width: var(--game-area-width);
+  height: var(--game-area-height);
+  border: solid var(--game-area-border-width) var(--color-white);
+  border-radius: var(--game-area-radius);
+}
+
+#brickAnchor {
+  position: absolute;
+  display: flex;
+  gap: var(--brick-gap);
+}
+
+#scoreBoard {
+  text-align: center;
+  font-family: Arial, serif;
+  font-size: var(--score-font-size);
+  font-weight: bold;
+}

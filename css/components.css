@@ -1,0 +1,80 @@
+#ball {
+  position: absolute;
+  width: var(--ball-size);
+  height: var(--ball-size);
+  top: var(--ball-initial-top);
+  background: radial-gradient(
+    circle at 30% 30%,
+    var(--color-ball-highlight) 0%,
+    var(--color-ball-mid) 45%,
+    var(--color-ball-shadow) 100%
+  );
+  border-radius: 50%;
+  box-shadow:
+    0 0 8px var(--ball-glow-primary),
+    0 0 14px var(--ball-glow-secondary);
+}
+
+#paddle {
+  width: var(--paddle-width);
+  height: var(--paddle-height);
+  background-color: var(--color-white);
+  position: absolute;
+  top: var(--paddle-initial-top);
+  left: var(--paddle-initial-left);
+  border-radius: var(--paddle-radius);
+  overflow: hidden;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    width: var(--paddle-endcap-width);
+    height: 100%;
+    background-color: var(--color-red);
+    top: 0;
+  }
+
+  &::before {
+    left: 0;
+    border-top-left-radius: var(--paddle-radius);
+    border-bottom-left-radius: var(--paddle-radius);
+  }
+
+  &::after {
+    right: 0;
+    border-top-right-radius: var(--paddle-radius);
+    border-bottom-right-radius: var(--paddle-radius);
+  }
+}
+
+.brick {
+  width: var(--brick-width);
+  height: var(--brick-height);
+  background-color: var(--color-brick);
+  border-radius: var(--brick-radius);
+  transition:
+    background-color var(--transition-brick-color),
+    transform var(--transition-brick-transform);
+}
+
+.fade-out {
+  transform: scale(0);
+  opacity: 0;
+}
+
+.shrink {
+  animation: shrinkOut var(--animation-shrink-duration) forwards;
+}
+
+@keyframes shrinkOut {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+}

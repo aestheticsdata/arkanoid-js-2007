@@ -1,0 +1,12 @@
+:root {
+  --color-bg-start: oklch(0.83 0.09 231);
+  --color-bg-end: oklch(0.65 0.19 256);
+  --color-white: oklch(1 0 0);
+  --color-red: oklch(0.64 0.26 29);
+  --color-brick: oklch(0.52 0.28 266);
+  --color-ball-highlight: oklch(0.98 0.04 104);
+  --color-ball-mid: oklch(0.96 0.17 111);
+  --color-ball-shadow: oklch(0.88 0.16 103);
+  --ball-glow-primary: oklch(0.94 0.11 103 / 0.85);
+  --ball-glow-secondary: oklch(0.91 0.15 105 / 0.55);
+}

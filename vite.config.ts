@@ -3,6 +3,14 @@ import { fileURLToPath, URL } from "node:url";
 import { defineConfig } from "vite";
 
 export default defineConfig({
+  css: {
+    transformer: "lightningcss",
+    lightningcss: {
+      drafts: {
+        nesting: true,
+      },
+    },
+  },
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
