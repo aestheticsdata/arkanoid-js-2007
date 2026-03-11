@@ -150,7 +150,7 @@ WEB_ROOT_BASE=/var/www/1991computer/arkanoid-2007 \
 HEALTHCHECK_URL=https://1991computer.com/arkanoid-2007/ \
 EXPECTED_HTML_MARKER="Breakout 2007" \
 MAX_RELEASES_TO_KEEP=20 \
-BUILD_BASE_PATH=/arkanoid-2007/ \
+BUILD_BASE_PATH=./ \
 ./scripts/deploy.sh deploy
 ```
 
@@ -224,6 +224,19 @@ bricks: {
   ]
 }
 ```
+
+### Brick collision pre-calculation
+
+`BrickWall` uses a pre-calculated grid lookup so each tick does not scan all bricks.
+
+How it works:
+
+- At mount time, bricks are stored in `brickGrid[row][column]`.
+- Global wall bounds are precomputed (`wallBounds` + `wallStartX`).
+- During collision checks:
+  - first, a wall-level AABB culling rejects balls fully outside the brick zone
+  - then only a small candidate range of rows/columns is tested
+- This keeps collision checks closer to O(k) (local candidates) instead of O(n) (all bricks).
 
 ### Paddle bounce angle
 
