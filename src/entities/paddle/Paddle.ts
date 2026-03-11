@@ -34,6 +34,12 @@ export class Paddle {
     this.render();
   }
 
+  moveByDelta(deltaX: number, gameAreaWidth: number): void {
+    const maxLeft = gameAreaWidth - this.paddleWidth;
+    this.xPos = clamp(this.xPos + deltaX, 0, maxLeft);
+    this.render();
+  }
+
   render(): void {
     this.element.style.left = `${this.xPos}px`;
   }

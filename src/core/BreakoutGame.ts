@@ -36,6 +36,7 @@ export class BreakoutGame {
   private accumulator = 0;
   private animationFrameId: number | null = null;
   private gameAreaRect: DOMRectReadOnly | null = null;
+  private isPointerLocked = false;
 
   constructor(private readonly elements: BreakoutGameElements) {
     this.paddle = new Paddle(this.elements.paddle);
@@ -58,15 +59,34 @@ export class BreakoutGame {
     this.accumulator = 0;
     this.elements.gameArea.classList.add("is-playing");
     document.addEventListener("mousemove", this.onMouseMove);
+    this.elements.gameArea.addEventListener("mousedown", this.onGameAreaMouseDown);
+    document.addEventListener("pointerlockchange", this.onPointerLockChange);
     window.addEventListener("resize", this.onViewportChange, { passive: true });
     window.addEventListener("scroll", this.onViewportChange, { passive: true });
     this.animationFrameId = requestAnimationFrame(this.gameLoop);
   }
 
   private readonly onMouseMove = (event: MouseEvent): void => {
+    if (this.isPointerLocked) {
+      this.paddle.moveByDelta(event.movementX, this.elements.gameArea.clientWidth);
+      return;
+    }
+
     const gameAreaRect = this.gameAreaRect ?? this.elements.gameArea.getBoundingClientRect();
     this.gameAreaRect = gameAreaRect;
     this.paddle.moveWithPointer(event.clientX, gameAreaRect);
+  };
+
+  private readonly onGameAreaMouseDown = (): void => {
+    if (document.pointerLockElement === this.elements.gameArea) {
+      return;
+    }
+
+    this.elements.gameArea.requestPointerLock();
+  };
+
+  private readonly onPointerLockChange = (): void => {
+    this.isPointerLocked = document.pointerLockElement === this.elements.gameArea;
   };
 
   private readonly onViewportChange = (): void => {
@@ -174,8 +194,14 @@ export class BreakoutGame {
     }
 
     document.removeEventListener("mousemove", this.onMouseMove);
+    this.elements.gameArea.removeEventListener("mousedown", this.onGameAreaMouseDown);
+    document.removeEventListener("pointerlockchange", this.onPointerLockChange);
     window.removeEventListener("resize", this.onViewportChange);
     window.removeEventListener("scroll", this.onViewportChange);
+    if (document.pointerLockElement === this.elements.gameArea) {
+      document.exitPointerLock();
+    }
+    this.isPointerLocked = false;
     this.elements.gameArea.classList.remove("is-playing");
   }
 

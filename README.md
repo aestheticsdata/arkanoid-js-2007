@@ -29,6 +29,7 @@ Tiny browser Breakout game originally made in 2007, modernized with Vite, strict
 
 - Ball now starts on the paddle (inside game area) instead of spawning outside.
 - Paddle collision now computes a dynamic bounce angle based on impact position.
+- Pointer control now supports a hybrid mode with `Pointer Lock API` (relative mouse delta) plus classic fallback.
 - Brick wall now supports multiple configurable rows.
 - Brick style is now fully configurable:
   - per-row colors/styles
@@ -249,6 +250,19 @@ How it works:
 - Mouse move handling reuses the cached rect for paddle movement calculations.
 
 This keeps pointer tracking behavior identical while reducing repeated layout reads during high-frequency input.
+
+### Pointer Lock mode
+
+`BreakoutGame` uses a hybrid pointer model to keep controls responsive when the mouse leaves the game area.
+
+How it works:
+
+- Default mode: classic absolute pointer control (`clientX`).
+- Click inside `#gameArea`: requests `Pointer Lock` and switches to relative control (`movementX`).
+- While locked, paddle movement no longer depends on pointer position in the viewport.
+- Press `Esc` to exit lock and return to classic mode.
+
+This avoids losing paddle control in edge cases where absolute mouse tracking stops receiving meaningful position updates.
 
 ### Paddle bounce angle
 
