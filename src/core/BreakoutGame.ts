@@ -35,6 +35,7 @@ export class BreakoutGame {
   private lastTime = performance.now();
   private accumulator = 0;
   private animationFrameId: number | null = null;
+  private gameAreaRect: DOMRectReadOnly | null = null;
 
   constructor(private readonly elements: BreakoutGameElements) {
     this.paddle = new Paddle(this.elements.paddle);
@@ -47,6 +48,7 @@ export class BreakoutGame {
     this.brickWall.mount(this.elements.gameArea.clientWidth);
     this.scoreboard.update(this.brickWall.remainingBricks);
 
+    this.refreshGameAreaRect();
     this.ball.placeAbove(this.paddle.bounds);
     this.ball.setVelocityFromLaunch(this.config.physics.initialLaunchAngleDeg, this.config.physics.ballSpeed);
     this.ball.render();
@@ -56,11 +58,19 @@ export class BreakoutGame {
     this.accumulator = 0;
     this.elements.gameArea.classList.add("is-playing");
     document.addEventListener("mousemove", this.onMouseMove);
+    window.addEventListener("resize", this.onViewportChange, { passive: true });
+    window.addEventListener("scroll", this.onViewportChange, { passive: true });
     this.animationFrameId = requestAnimationFrame(this.gameLoop);
   }
 
   private readonly onMouseMove = (event: MouseEvent): void => {
-    this.paddle.moveWithPointer(event.clientX, this.elements.gameArea.getBoundingClientRect());
+    const gameAreaRect = this.gameAreaRect ?? this.elements.gameArea.getBoundingClientRect();
+    this.gameAreaRect = gameAreaRect;
+    this.paddle.moveWithPointer(event.clientX, gameAreaRect);
+  };
+
+  private readonly onViewportChange = (): void => {
+    this.refreshGameAreaRect();
   };
 
   private readonly gameLoop = (now: number): void => {
@@ -164,6 +174,12 @@ export class BreakoutGame {
     }
 
     document.removeEventListener("mousemove", this.onMouseMove);
+    window.removeEventListener("resize", this.onViewportChange);
+    window.removeEventListener("scroll", this.onViewportChange);
     this.elements.gameArea.classList.remove("is-playing");
+  }
+
+  private refreshGameAreaRect(): void {
+    this.gameAreaRect = this.elements.gameArea.getBoundingClientRect();
   }
 }

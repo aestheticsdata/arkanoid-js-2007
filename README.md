@@ -238,6 +238,18 @@ How it works:
   - then only a small candidate range of rows/columns is tested
 - This keeps collision checks closer to O(k) (local candidates) instead of O(n) (all bricks).
 
+### Pointer input optimization
+
+`BreakoutGame` caches the game area DOM rect to avoid calling `getBoundingClientRect()` on every mouse move event.
+
+How it works:
+
+- The rect is initialized when the game starts.
+- It is refreshed on viewport changes (`resize` and `scroll`).
+- Mouse move handling reuses the cached rect for paddle movement calculations.
+
+This keeps pointer tracking behavior identical while reducing repeated layout reads during high-frequency input.
+
 ### Paddle bounce angle
 
 Paddle rebound is handled in `src/core/physics/PaddleBounce.ts` and applied from `src/core/BreakoutGame.ts`.
